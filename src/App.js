@@ -4,27 +4,29 @@ import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
 import "./components/TodoComponents/Todo.css";
 
+// todoArr is an array full of todo(s).
+const todoArr = [
+  {
+    task: "Organize Garage",
+    id: 1528817077286,
+    completed: false
+  },
+  {
+    task: "Bake Cookies",
+    id: 1528817084358,
+    completed: false
+  }
+];
+
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      //todoData is an array full of todo(s).
-      todoArr: [
-        {
-          task: "Organize Garage",
-          id: 1528817077286,
-          completed: false
-        },
-        {
-          task: "Bake Cookies",
-          id: 1528817084358,
-          completed: false
-        }
-      ]
+      todoArr // same as todoArr: todoArr
     };
   }
 
-  addtodo = (e, todo) => {
+  addTodo = (e, todo) => {
     e.preventDefault();
     const newTodo = {
       task: todo,
@@ -42,7 +44,7 @@ class App extends React.Component {
         if (todoId === todo.id) {
           return {
             ...todo,
-            completed: !todo.completed
+            completed: !todo.completed //overrides completed value bc last
           };
         }
         return todo;
@@ -50,10 +52,10 @@ class App extends React.Component {
     });
   };
 
-  clearCompletedTodos = e => {
+  clearCompleted = e => {
     e.preventDefault();
     this.setState({
-      todoArr: this.state.todoArr.filter(todo => !todo.completed)
+      todoArr: this.state.todoArr.filter(todo => !todo.completed) //if opposite of todo.completed is true then keep it
     });
   };
 
@@ -68,7 +70,7 @@ class App extends React.Component {
 
         <div className="buttons">
           <TodoForm addTodo={this.addTodo} />
-          <button onClick={this.clearCompletedTodos}>Clear Completed</button>
+          <button onClick={this.clearCompleted}>Clear Completed</button>
         </div>
       </div>
     );

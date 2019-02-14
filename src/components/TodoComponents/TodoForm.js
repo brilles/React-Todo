@@ -12,21 +12,22 @@ class TodoForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  addTodo = e => {
-    this.setState({ item: "" });
+  // clears input and adds Todo
+  submitTodo = e => {
+    this.setState({ todo: "" });
     this.props.addTodo(e, this.state.todo);
   };
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.submitTodo}>
         <input
           type="text"
-          value={this.state.todo}
+          value={this.state.todo} // controls input
           name="todo"
           onChange={this.handleChanges}
         />
-        <button onClick={this.addTodo}>Add Todo</button>
+        <button>Add Todo</button>
       </form>
     );
   }
