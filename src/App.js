@@ -7,14 +7,14 @@ import "./components/TodoComponents/Todo.css";
 // todoArr is an array full of todo(s).
 const todoArr = [
   {
-    task: "Organize Garage",
+    task: "example todo",
     id: 1528817077286,
     completed: false
   },
   {
-    task: "Bake Cookies",
+    task: "example completed todo",
     id: 1528817084358,
-    completed: false
+    completed: true
   }
 ];
 
@@ -30,7 +30,7 @@ class App extends React.Component {
     e.preventDefault();
     const newTodo = {
       task: todo,
-      id: Date.now(),
+      id: Date.now(), //returns the num of ms elapsed since 1/1/1970 0 UTC
       completed: false
     };
     this.setState({
