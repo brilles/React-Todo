@@ -1,79 +1,77 @@
 import React from "react";
-import Todo from "./components/TodoComponents/Todo";
+
+import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
+import "./components/TodoComponents/Todo.css";
+
+// todoArr is an array full of todo(s).
+const todoArr = [
+  {
+    task: "example todo",
+    id: 1528817077286,
+    completed: false
+  },
+  {
+    task: "example completed todo",
+    id: 1528817084358,
+    completed: true
+  }
+];
 
 class App extends React.Component {
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
   constructor() {
     super();
     this.state = {
-      todos: [
-        {
-          task: "Organize Garage",
-          id: 1528817077286,
-          completed: false
-        },
-        {
-          task: "Bake Cookies",
-          id: 1528817084358,
-          completed: false
-        },
-        {
-          task: "Wash Car",
-          id: 1528817084390,
-          completed: false
-        }
-      ],
-      task: "",
-      id: "",
-      completed: ""
+      todoArr // same as todoArr: todoArr
     };
   }
 
-  addTodo = e => {
-    //prevents browser from refreshing
+  addTodo = (e, todo) => {
     e.preventDefault();
-    // console.log(e.target);
-
     const newTodo = {
-      task: this.state.task,
-      id: this.state.id,
-      completed: this.state.completed
+      task: todo,
+      id: Date.now(), //returns the num of ms elapsed since 1/1/1970 0 UTC
+      completed: false
     };
     this.setState({
-      todos: [...this.state.todos, newTodo],
-      task: "",
-      id: "",
-      completed: ""
+      todoArr: [...this.state.todoArr, newTodo]
     });
   };
 
-  handleChanges = e => {
+  toggleTodo = todoId => {
     this.setState({
-      [e.target.name]: e.target.value
+      todoArr: this.state.todoArr.map(todo => {
+        if (todoId === todo.id) {
+          return {
+            ...todo,
+            completed: !todo.completed //overrides completed value bc last
+          };
+        }
+        return todo;
+      })
+    });
+  };
+
+  clearCompleted = e => {
+    e.preventDefault();
+    this.setState({
+      todoArr: this.state.todoArr.filter(todo => !todo.completed) //if opposite of todo.completed is true then keep it
     });
   };
 
   render() {
     return (
-      <div>
-        <h1>Todo List:</h1>
-
-        <div className="todo-list">
-          {this.state.todos.map((todo, index) => (
-            <Todo key={index} todo={todo} />
-          ))}
+      <div className="App">
+        <div className="header">
+          <h1>Todo List:</h1>
         </div>
 
-        <TodoForm
-          addTodo={this.addTodo}
-          task={this.state.task}
-          handleChanges={this.handleChanges}
-          id={this.state.id}
-          completed={this.state.completed}
-        />
+        <TodoList todoArr={this.state.todoArr} toggleTodo={this.toggleTodo} />
+
+        <div className="buttons">
+          <TodoForm addTodo={this.addTodo} />
+          <button onClick={this.clearCompleted}>Clear Completed</button>
+        </div>
       </div>
     );
   }
